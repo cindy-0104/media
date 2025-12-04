@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>은은하게 빛나는 화면</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000; /* 완전 어두운 화면 */
+            font-family: "Pretendard", sans-serif;
+            overflow: hidden;
+        }
+
+        /* 은은하게 빛나는 텍스트 */
+        .glow-text {
+            font-size: 1.4rem;
+            color: #dbe8ff;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 20px;
+
+            /* 은은한 광채 효과 */
+            text-shadow:
+                0 0 6px rgba(150, 180, 255, 0.45),
+                0 0 12px rgba(120, 160, 255, 0.25);
+            
+            animation: breathing 3s ease-in-out infinite;
+        }
+
+        @keyframes breathing {
+            0% { opacity: 0.5; text-shadow: 0 0 4px rgba(170, 190, 255, 0.4); }
+            50% { opacity: 1; text-shadow: 0 0 7px rgba(170, 190, 255, 0.55); }
+            100% { opacity: 0.5; text-shadow: 0 0 4px rgba(170, 190, 255, 0.4); }
+        }
+
+        /* 이미지 */
+        .click-image {
+            width: 200px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .click-image:hover {
+            transform: scale(1.05);
+            opacity: 0.85;
+        }
+
+        /* 클릭 시 페이드아웃 */
+        .fadeout {
+            animation: fadeOut 0.8s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                filter: blur(4px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-text">
+        Creating
+        Creations
+        
+    </div>
+
+    <img src="image.png" class="click-image" id="goNext" alt="다음으로 이동 이미지">
+
+    <script>
+        const next = document.getElementById("goNext");
+
+        next.addEventListener("click", () => {
+            next.classList.add("fadeout");
+
+            setTimeout(() => {
+                // 이동할 페이지 주소
+                window.location.href = "a.html";
+            }, 700);
+        });
+    </script>
+
+</body>
+</html>
