@@ -1,117 +1,131 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
-    <title>집으로 들어가기</title>
+    <title>문 앞 AR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            background: #020814;
+            margin: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: radial-gradient(circle at center, #111827 0%, #020617 60%, #000 100%);
             overflow: hidden;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #fff;
+            touch-action: none;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+            color: #e5e7eb;
         }
 
-        .scene {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 9 / 16;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        .container {
+            text-align: center;
+        }
+
+        .title {
+            margin-bottom: 16px;
+            font-size: 16px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #9ca3af;
+        }
+
+        .glow-text {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: #e5e7ff;
+            text-shadow:
+                0 0 6px rgba(238, 219, 48, 0.6),
+                0 0 18px rgba(255, 210, 48, 0.4);
+        }
+
+        /* 3D 문 컨테이너 */
+        .door-wrapper {
+            width: 160px;
+            height: 280px;
+            margin: 0 auto;
+            perspective: 1000px;
             cursor: pointer;
         }
 
-        .door-image {
+        .door-frame {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transform-origin: center;
-            transition: transform 0.8s ease, filter 0.8s ease;
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow:
+                0 0 6px rgba(400, 400, 60, 0.3),
+                0 0 18px rgba(400, 400, 60, 0.2);
+            background: linear-gradient(145deg, #020617, #111827);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .overlay-text {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 8px 16px;
-            border-radius: 999px;
-            background: rgba(0, 0, 0, 0.55);
-            font-size: 0.95rem;
-            backdrop-filter: blur(6px);
-            white-space: nowrap;
+        .door {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            background-image: url('door.png');
+            /* 문 이미지를 door.png 로 두면 됨 */
+            background-size: cover;
+            background-position: center;
+            transform-origin: left center;
+            transform: rotateY(0deg);
+            transition: transform 1.2s ease-in-out;
         }
 
-        .scene.entering .door-image {
-            transform: scale(2.2);
-            filter: blur(4px) brightness(0.5);
+        .door.open {
+            transform: rotateY(-95deg);
         }
 
-        .fade-overlay {
-            position: absolute;
-            inset: 0;
-            background: #000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 6s ease;
+        .hint {
+            margin-top: 18px;
+            font-size: 12px;
+            color: #6b7280;
         }
 
-        .scene.entering .fade-overlay {
-            opacity: 1;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
+        .hint::before {
+            content: "➜ ";
+            opacity: 0.6;
         }
     </style>
 </head>
+
 <body>
+    <div class="container">
+        <div class="title"></div>
+        <div class="glow-text">what keeps me breathing</div>
 
-<div class="scene" id="enterHome">
-    <!-- 집/문 이미지 -->
-    <img src="brown-wooden-door.png" alt="집으로 들어가는 문" class="door-image">
+        <div class="door-wrapper" id="doorArea">
+            <div class="door-frame">
+                <div class="door" id="door"></div>
+            </div>
+        </div>
 
-    <!-- 안내 텍스트 -->
-    <div class="overlay-text">
-        🚪 문을 터치해서 집으로 들어가기
+        <div class="hint">문을 터치하면 방 안으로 들어갑니다</div>
     </div>
 
-    <!-- 페이드 아웃용 오버레이 -->
-    <div class="fade-overlay"></div>
-</div>
+    <script>
+        const door = document.getElementById('door');
+        const doorArea = document.getElementById('doorArea');
 
-<script>
-    // 👉 여기 URL을 네 AR 링크로 바꿔줘!
-    const TARGET_URL = "https://example.com/your-ar-link";
+        // 문 클릭하면 열리는 애니메이션 + 애니 끝나면 페이지 이동
+        doorArea.addEventListener('click', () => {
+            // 중복 클릭 방지
+            if (door.classList.contains('open')) return;
 
-    const scene = document.getElementById("enterHome");
+            door.classList.add('open');
 
-    scene.addEventListener("click", () => {
-        // 애니메이션 클래스 추가
-        scene.classList.add("entering");
-
-        // 애니메이션 끝난 후 링크로 이동
-        setTimeout(() => {
-            window.location.href = TARGET_URL;
-            // 새 탭으로 열고 싶으면 위 줄 대신 아래 줄:
-            // window.open(TARGET_URL, "_blank");
-        }, 700); // CSS transition 시간(0.6~0.8s)에 맞게 조정
-    });
-</script>
-
+            // 애니메이션 끝난 후 방 안 페이지로 이동
+            door.addEventListener('transitionend', () => {
+                // 여기 링크를 실제 AR 방 URL로 바꿔줘
+                window.location.href = 'room.html';
+            }, { once: true });
+        });
+    </script>
 </body>
+
 </html>

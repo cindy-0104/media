@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모든 답변 보기</title>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #000;
+            font-family: "Pretendard", sans-serif;
+            color: #dbe8ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+            overflow-y: auto;
+        }
+
+        /* 상단 글씨 반짝 효과 */
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-shadow:
+                0 0 6px rgba(150, 180, 255, 0.45),
+                0 0 12px rgba(120, 160, 255, 0.25);
+            animation: breathing 3s ease-in-out infinite;
+        }
+
+        @keyframes breathing {
+            0% {
+                opacity: 0.8;
+                text-shadow: 0 0 4px rgba(170, 190, 255, 0.4);
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 7px rgba(170, 190, 255, 0.55);
+            }
+
+            100% {
+                opacity: 0.8;
+                text-shadow: 0 0 4px rgba(170, 190, 255, 0.4);
+            }
+        }
+
+        /* 리스트 전체 */
+        #list {
+            width: 80%;
+            max-width: 700px;
+        }
+
+        /* 답변 박스 스타일 */
+        #list div {
+            background: #111;
+            border: 1px solid #334;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            box-shadow: 0 0 12px rgba(120, 160, 255, 0.18);
+            color: #dbe8ff;
+            font-size: 1rem;
+            line-height: 1.45;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>저장된 답변 목록</h2>
+    <div id="list"></div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDzzvIzfD69sbhpllo-Al2WDnKsfYFkR0",
+            authDomain: "understandingmedia-26901.firebaseapp.com",
+            databaseURL: "https://understandingmedia-26901-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "understandingmedia-26901",
+            storageBucket: "understandingmedia-26901.firebasestorage.app",
+            messagingSenderId: "637508298408",
+            appId: "1:637508298408:web:ba3ad3fae5ae0cf808849d"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const list = document.getElementById("list");
+
+        db.ref("answers").on("value", snapshot => {
+            let html = "";
+            const data = [];
+
+            snapshot.forEach(child => {
+                data.push(child.val());
+            });
+
+            data.sort((a, b) => b.time - a.time);
+
+            data.forEach(item => {
+                html += `<div>${item.text}</div>`;
+            });
+
+            list.innerHTML = html;
+        });
+    </script>
+
+</body>
+
+</html>
