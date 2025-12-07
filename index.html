@@ -15,7 +15,6 @@
             justify-content: center;
             align-items: center;
             background: #000;
-            /* 완전 어두운 화면 */
             font-family: "Pretendard", sans-serif;
             overflow: hidden;
         }
@@ -28,7 +27,6 @@
             text-align: center;
             margin-bottom: 20px;
 
-            /* 은은한 광채 효과 */
             text-shadow:
                 0 0 6px rgba(150, 180, 255, 0.45),
                 0 0 12px rgba(120, 160, 255, 0.25);
@@ -53,17 +51,20 @@
             }
         }
 
-        /* 이미지 */
-        .click-image {
-            width: 200px;
-            border-radius: 12px;
+        /* 거의 안 보이는 클릭 버튼 */
+        .invisible-button {
+            width: 160px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: 0.3s ease;
         }
 
-        .click-image:hover {
-            transform: scale(1.05);
-            opacity: 0.85;
+        /* 호버 시 아주 약한 표시만 */
+        .invisible-button:hover {
+            background: rgba(255, 255, 255, 0.06);
         }
 
         /* 클릭 시 페이드아웃 */
@@ -86,7 +87,8 @@
         Sometimes I wonder what keeps me alive.
     </div>
 
-    <img src="image.png" class="click-image" id="goNext" alt="다음으로 이동 이미지">
+    <!-- 거의 보이지 않는 버튼 -->
+    <button class="invisible-button" id="goNext"></button>
 
     <script>
         const next = document.getElementById("goNext");
@@ -95,7 +97,6 @@
             next.classList.add("fadeout");
 
             setTimeout(() => {
-                // 이동할 페이지 주소
                 window.location.href = "a.html";
             }, 700);
         });

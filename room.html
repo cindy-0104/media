@@ -7,27 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
+        /* ===== 기본 레이아웃 ===== */
         body {
             margin: 0;
             height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at top, #020617 0%, #0b1120 40%, #000 100%);
-            color: #e5e7eb;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+            color: #e5e7eb;
             overflow: hidden;
         }
 
         .inner {
             text-align: center;
+            margin-bottom: 20px;
         }
 
+        /* ===== 텍스트 스타일 ===== */
         .label {
             font-size: 12px;
             letter-spacing: 0.25em;
             color: #6b7280;
-            margin-bottom: 10px;
         }
 
         .main-text {
@@ -42,28 +45,61 @@
             font-size: 13px;
             color: #9ca3af;
         }
+
+        /* ===== 링크 버튼 ===== */
+        .link-btn {
+            display: inline-block;
+            margin: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #9ca3af;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.25s ease;
+        }
+
+        .link-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* 클릭 시 페이드아웃 효과 */
+        .fadeout {
+            animation: fadeOut 0.7s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                filter: blur(3px);
+            }
+        }
     </style>
 </head>
 
 <body>
+
     <div class="inner">
-        <div class="label">explore the history </div>
-        <div class="main-text">.</div>
-        <div class="sub">follow the link </div>
-    </div><img src="image.png" class="click-image" id="goNext" alt="다음으로 이동 이미지">
+        <div class="label">EXPLORE THE HISTORY</div>
+    </div>
+
+    <!-- 버튼 2개 -->
+    <a href="https://builder.blippar.com/?blipp=1120839" class="link-btn">walk in</a>
+    <a href="type.html" class="link-btn" id="goNext">next</a>
 
     <script>
         const next = document.getElementById("goNext");
 
-        next.addEventListener("click", () => {
+        next.addEventListener("click", (e) => {
+            e.preventDefault();
             next.classList.add("fadeout");
 
             setTimeout(() => {
-                // 이동할 페이지 주소
                 window.location.href = "type.html";
-            }, 700);
+            }, 650);
         });
     </script>
+
 </body>
 
 </html>
