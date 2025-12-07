@@ -84,23 +84,23 @@
 <body>
 
     <div class="glow-text">
-        …Then I’ll keep breathing.
+        ...Then I'll keep breathing.
     </div>
 
-    <id="goNext" alt="next">
+    <img src="image.png" class="click-image" id="goNext" alt="다음으로 이동 이미지">
 
-        <script>
-            const next = document.getElementById("goNext");
+    <script>
+        const next = document.getElementById("goNext");
 
-            next.addEventListener("click", () => {
-                next.classList.add("fadeout");
+        next.addEventListener("click", () => {
+            next.classList.add("fadeout");
 
-                setTimeout(() => {
-                    // 이동할 페이지 주소
-                    window.location.href = "door.html";
-                }, 700);
-            });
-        </script>
+            setTimeout(() => {
+                // 이동할 페이지 주소
+                window.location.href = "door.html";
+            }, 700);
+        });
+    </script>
 
 </body>
 
